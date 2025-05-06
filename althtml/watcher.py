@@ -34,10 +34,10 @@ class ChangeHandler(FileSystemEventHandler):
     # on_created, on_deleted can be added similarly if needed
 
 
-def run_watcher(no_write_paths, write_pairs):
+def run_watcher(no_write_paths, write_pairs, watch_paths):
     """Sets up and runs the watchdog observer."""
     files_to_watch = set(write_pairs.keys())
-    dirs_to_watch = {p.parent for p in files_to_watch | no_write_paths}
+    dirs_to_watch = {p.parent for p in files_to_watch | no_write_paths | watch_paths}
     
     if not dirs_to_watch:
          print("Error: No valid directories provided to watch.")
@@ -52,7 +52,7 @@ def run_watcher(no_write_paths, write_pairs):
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
 
-    event_handler = ChangeHandler(files_to_watch | no_write_paths, write_pairs=write_pairs, header_files=no_write_paths)
+    event_handler = ChangeHandler(files_to_watch | no_write_paths | watch_paths, write_pairs=write_pairs, header_files=no_write_paths, watch_files=watch_paths)
     observer = Observer()
 
     scheduled_count = 0

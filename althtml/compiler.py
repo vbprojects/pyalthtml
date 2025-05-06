@@ -320,6 +320,19 @@ class AlthtmlCompiler:
             return 1 # Consumed 1 line
         # --- END SPECIAL HANDLING FOR 'raw@ ' DIRECTIVE (line) ---
 
+        if line.startswith('rawf '):
+            text_content = open(line[5:].strip(), "r+").read()
+            parent_indent_level = self.tag_stack[-1]['indent_level'] if self.tag_stack else -1
+            raw_indent_str = '  ' * (parent_indent_level + 1)
+            raw_block_lines = text_content.splitlines(keepends=True)
+            for output_line in raw_block_lines:
+                    self.html_output += raw_indent_str + output_line
+            # Ensure a final newline if the original content didn't end with one but wasn't empty
+            if text_content and not self.html_output.endswith('\n'):
+                 self.html_output += '\n'
+            return 1
+        
+
 
         # --- Handle Tags and Implicit Text ---
         tag_match = re.match(r"^(<[a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+)(>?)\s*(.*)", line) # Capture rest after tag+>

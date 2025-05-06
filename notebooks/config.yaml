@@ -2,5 +2,8 @@ headers :
     - ./headers/*.alth
 write :
     -
-        src : ./index.althtml
+        src : ./temp.althtml
         dst : ./index.html
+    -
+        src : ./temp2.althtml
+        dst : ./index2.html
