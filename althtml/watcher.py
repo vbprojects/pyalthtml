@@ -52,7 +52,7 @@ def run_watcher(no_write_paths, write_pairs, watch_paths):
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
 
-    event_handler = ChangeHandler(files_to_watch | no_write_paths | watch_paths, write_pairs=write_pairs, header_files=no_write_paths, watch_files=watch_paths)
+    event_handler = ChangeHandler(files_to_watch | no_write_paths | watch_paths, write_pairs=write_pairs, header_files=no_write_paths)
     observer = Observer()
 
     scheduled_count = 0
